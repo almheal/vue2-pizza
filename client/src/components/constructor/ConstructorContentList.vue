@@ -16,7 +16,7 @@
 import ContentListItem from '@/components/constructor/ContentListItem'
 
 export default {
-  name: 'ProductContentList',
+  name: 'ConstructorContentList',
   components:{
     ContentListItem
   },

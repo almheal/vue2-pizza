@@ -46,7 +46,7 @@
               />
               <div class="dropdown__title" @click="intercomDropdown">
                 Указать домофон и подъезд
-                <triangle-icon :anim="isIntercom"/>
+                <app-triangle-icon :anim="isIntercom"/>
               </div>
             </div>
             <div
@@ -115,7 +115,7 @@
             />
             <div class="dropdown__title" @click="commentDropdown">
               Комментарий к заказу для курьера
-              <triangle-icon :anim="isComment"/>
+              <app-triangle-icon :anim="isComment"/>
             </div>
             <div class="dropdown__comment" v-if="isComment">
               <textarea
@@ -141,7 +141,7 @@
 </template>
 
 <script>
-import TriangleIcon from '@/components/icons/TriangleIcon'
+import AppTriangleIcon from '@/components/AppTriangleIcon'
 import OrderBasket from '@/components/order/OrderBasket'
 import AppPromoCode from '@/components/AppPromoCode'
 import BasketTitle from '@/components/basket/BasketTitle'
@@ -154,7 +154,7 @@ import { mapActions, mapGetters } from 'vuex'
 export default {
   name: 'Order',
   components:{
-    TriangleIcon,
+    AppTriangleIcon,
     OrderBasket,
     AppPromoCode,
     BasketTitle,

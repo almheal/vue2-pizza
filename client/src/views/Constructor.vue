@@ -7,13 +7,13 @@
             :title="title"
             :subtitle="subtitle"
           />
-          <ConstructorCategories
+          <constructor-categories
             :categories="getIngredientCategories"
             :activeCategory="activeCategory"
             @changeCategory="changeCategoryHandler"
           />
           <div class="constructor__row">
-            <ConstructorIngredients
+            <constructor-ingredients
               :ingredients="getIngredients"
               :activeCategory="activeCategory"
             />
@@ -22,14 +22,14 @@
         </div>
         <div class="product__column">
           <div class="product__img-wrapper">
-            <img :src="getConstructorProduct.img" alt="" class="product__img">
+            <img class="product__img" :src="getConstructorProduct.img" alt="product">
           </div>
           <div class="product__info">
             <input class="product__title"
               v-model="newTitle"
               :placeholder="'Придумайте название'"
             />
-            <img src="../assets/pen.svg" alt="edit" class="edit-icon">
+            <img class="edit-icon" src="../assets/pen.svg" alt="edit">
             <product-variety
               :variety="defaultProduct.variety"
               :activeVariety="getConstructorProduct.variety ? getConstructorProduct.variety : {}"
@@ -43,7 +43,7 @@
           </div>
           <div class="product__content">
             <div class="content__title">Ваша пицца содержит:</div>
-            <ProductContentList
+            <constructor-content-list
               :title="getConstructorProduct.variety ? getConstructorProduct.variety.title : ''"
               :price="getConstructorProduct.price"
               :kind="getConstructorProduct.kind ? getConstructorProduct.kind.size : ''"
@@ -72,7 +72,7 @@ import ConstructorCategories from '@/components/constructor/ConstructorCategorie
 import ConstructorIngredients from '@/components/constructor/ConstructorIngredients'
 import ProductVariety from '@/components/product/ProductVariety'
 import ProductKind from '@/components/product/ProductKind'
-import ProductContentList from '@/components/constructor/ProductContentList'
+import ConstructorContentList from '@/components/constructor/ConstructorContentList'
 import AppButton from '@/components/AppButton'
 import AppPageTitle from '@/components/AppPageTitle'
 import constructor from '../components/constructor/default.constructor'
@@ -87,7 +87,7 @@ export default {
     ConstructorIngredients,
     ProductVariety,
     ProductKind,
-    ProductContentList,
+    ConstructorContentList,
     AppButton,
     AppPageTitle,
     AppNotification,
@@ -133,17 +133,22 @@ export default {
     },
     async addProduct(){
       this.added = true
+
       if(!this.newTitle){
         this.getConstructorProduct.title = 'Создай свою пиццу'
       }else{
         this.getConstructorProduct.title = this.newTitle
       }
+
       this.getConstructorProduct.price = this.getTotal
       await this.getProductsFromLocal()
       this.addInBasket(this.getConstructorProduct)
     },
     async changeVarietyHandler(variety){
-      await this.changeVarietyProduct({product: this.getConstructorProduct, variety})
+      await this.changeVarietyProduct({
+        product: this.getConstructorProduct,
+        variety
+      })
       this.calculateTotal(this.getConstructorProduct)
     },
     async changeKindHandler(kind){
@@ -161,9 +166,11 @@ export default {
   async mounted(){
     this.loader = true
     await this.fetchAllIngredients()
+
     this.getIngredients.forEach(ingredient =>{
       this.$set(ingredient, 'count', 0)
     })
+
     if(this.$route.query.id){
       const constructor = await this.fetchProduct(this.$route.query.id)
       const product = await this.startingActiveProduct(constructor)
@@ -175,12 +182,14 @@ export default {
       await this.setConstructorProduct(product)
       this.defaultProduct = constructor
     }
+
     await this.searchIngredientsProduct(this.getConstructorProduct)
     this.markedIngredientsOwner(this.getConstructorProduct.ingredients)
     this.calculateTotal(this.getConstructorProduct)
     this.loader = false
     await this.fetchAllIngredientCategories()
     this.activeCategory = this.getIngredientCategories[0]
+
     if(this.$route.query.removedIngredient){
       this.removedIngredientsFromQuery(this.$route.query.removedIngredient)
     }

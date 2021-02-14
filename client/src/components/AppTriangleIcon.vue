@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'TriangleIcon',
+  name: 'AppTriangleIcon',
   props:{
     anim:{
       type: Boolean,

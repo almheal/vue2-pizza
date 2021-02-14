@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import ProductIngredientsItem from '@/components/product/productIngredients/ProductIngredientsItem'
+import ProductIngredientsItem from '@/components/product/ProductIngredientsItem'
 import AppButton from '@/components/AppButton'
 
 export default {

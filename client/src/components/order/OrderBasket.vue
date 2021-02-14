@@ -6,7 +6,7 @@
         :showItems="showItems"
         @hideItems="hideItemsHandler"
       >
-        <triangle-icon :anim="showItems"/>
+        <app-triangle-icon :anim="showItems"/>
       </basket-title>
       <template v-if="!showItems && products.length">
           <div class="list__images">
@@ -26,7 +26,7 @@
         :showItems="showItems"
         @hideItems="hideItemsHandler"
       >
-        <triangle-icon :anim="showItems"/>
+        <app-triangle-icon :anim="showItems"/>
       </basket-title>
       <template v-if="products.length && showItems">
         <div class="list__items">
@@ -48,7 +48,7 @@
 
 <script>
 import BasketTitle from '@/components/basket/BasketTitle'
-import TriangleIcon from '@/components/icons/TriangleIcon'
+import AppTriangleIcon from '@/components/AppTriangleIcon'
 import BasketItem from '@/components/basket/BasketItem'
 import BasketEmpty from '@/components/basket/BasketEmpty'
 import ProductPrice from '@/components/product/ProductPrice'
@@ -58,7 +58,7 @@ export default {
   name: 'OrderBasket',
   components:{
     BasketTitle,
-    TriangleIcon,
+    AppTriangleIcon,
     BasketItem,
     BasketEmpty,
     ProductPrice

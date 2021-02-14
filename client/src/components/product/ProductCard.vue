@@ -68,7 +68,7 @@ import ProductVariety from '@/components/product/ProductVariety'
 import ProductKind from '@/components/product/ProductKind'
 import AppButton from '@/components/AppButton'
 import ProductPrice from '@/components/product/ProductPrice'
-import ProductIngredients from '@/components/product/productIngredients/ProductIngredients'
+import ProductIngredients from '@/components/product/ProductIngredients'
 import VLazyImage from 'v-lazy-image'
 import { mapActions, mapGetters } from 'vuex'
 

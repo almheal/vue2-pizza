@@ -15,7 +15,7 @@
             :count="getCountItems"
             @hideItems="hideItemsHandler"
           >
-            <TriangleIcon :anim="showItems"/>
+            <app-triangle-icon :anim="showItems"/>
           </basket-title>
           <div class="clear__basket"
             v-if="getCountItems"
@@ -51,7 +51,7 @@
 
 <script>
 import BasketTitle from '@/components/basket/BasketTitle'
-import TriangleIcon from '@/components/icons/TriangleIcon'
+import AppTriangleIcon from '@/components/AppTriangleIcon'
 import BasketItem from '@/components/basket/BasketItem'
 import BasketEmpty from '@/components/basket/BasketEmpty'
 import AppButton from '@/components/AppButton'
@@ -63,7 +63,7 @@ export default {
   name: 'AppBasket',
   components:{
     BasketTitle,
-    TriangleIcon,
+    AppTriangleIcon,
     BasketItem,
     BasketEmpty,
     AppButton,
