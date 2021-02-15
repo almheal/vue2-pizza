@@ -107,7 +107,7 @@ export default {
 .basket{
   position: sticky;
   right: 0;
-  top: 25px;
+  top: 100px;
   width: 25%;
   margin-left: 25px;
   padding-top: 40px;
