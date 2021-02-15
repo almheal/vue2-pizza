@@ -2,12 +2,10 @@ const express = require('express')
 const path = require('path')
 const mongoose = require('mongoose')
 const config = require('config')
-const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const routes = require('./routes')
 
 const app = express()
-app.use(cookieParser())
 
 const PORT = config.get('port') || 5000
 

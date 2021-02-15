@@ -5,5 +5,6 @@ module.exports = {
   TagProduct: require('./TagProduct'),
   Feature: require('./Feature'),
   IngredientCategory: require('./IngredientCategory'),
-  Ingredient: require('./Ingredient')
+  Ingredient: require('./Ingredient'),
+  User: require('./User')
 }

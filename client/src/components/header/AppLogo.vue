@@ -7,7 +7,7 @@
 
 <script>
 export default {
-  name: 'Logo',
+  name: 'AppLogo',
   props:{
     activeFixed:{
       type: Boolean,

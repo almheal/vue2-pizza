@@ -48,6 +48,7 @@ export default {
   color: #fff;
   font-size: 14px;
   text-transform: uppercase;
+  transition: .3s;
   &:hover::before{
     transform: scale(1.07);
     transition: .3s;
@@ -69,14 +70,16 @@ export default {
   }
   &.background-light-green::before{
     background-color: #e1faf4;
+
   }
 }
 
-button[disabled]{
+button.product__btn[disabled]{
   color: #bfb7b6;
   cursor: default;
   &::before{
     background-color: #f8f8f8;
+    transition: .3s;
   }
 }
 </style>

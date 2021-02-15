@@ -6,4 +6,5 @@ module.exports = [
   'feature',
   'ingredientCategory',
   'ingredient',
+  'user'
 ]
