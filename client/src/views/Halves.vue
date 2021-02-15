@@ -70,7 +70,7 @@
       </div>
       <app-notification
         v-if="added"
-        :title="activeProduct ? activeProduct.title : ''"
+        :title="activeProduct ? `Пицца «${activeProduct.title}» добавлена в корзину` : ''"
       />
       <div class="wrapper__loader" v-if="loader && !added">
         <app-scale-loader :loader="loader" />

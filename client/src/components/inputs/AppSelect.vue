@@ -8,7 +8,7 @@
         <li class="select__item"
           :class="{active : item === placeholder}"
           v-for="(item,index) in items" :key="index"
-          @click="selectItem(item)"
+          @click="selectItem({value: item, property})"
         >{{item}}</li>
       </ul>
     </div>
@@ -23,27 +23,32 @@ export default {
       type: String,
       default: ''
     },
-    placeholder:{
+    property:{
       type: String,
-      default: ''
+      required: true,
     },
     items:{
       type: Array,
-      default: () => []
+      default: () => ([])
     }
   },
   data: () => ({
-    open: false
+    open: false,
+    placeholder: ''
   }),
   methods:{
     openCloseSelect(){
       this.open = !this.open
     },
-    selectItem(item){
-      if(item === this.placeholder) return
+    selectItem({value, property}){
+      if(value === this.placeholder) return
+      this.placeholder = value
       this.openCloseSelect()
-      this.$emit('selectItem', item)
+      this.$emit('selectItem', value, property)
     },
+  },
+  mounted(){
+    this.placeholder = this.items[0]
   }
 }
 </script>

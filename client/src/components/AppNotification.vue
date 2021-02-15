@@ -1,7 +1,7 @@
 <template>
   <div class="banner">
     <div class="banner__body">
-      <h4 class="banner__title">Пицца «{{title}}» добавлена в корзину</h4>
+      <h4 class="banner__title">{{title}}</h4>
       <div class="banner__buttons">
         <app-button
           class="btn__menu"

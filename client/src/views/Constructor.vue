@@ -59,7 +59,7 @@
           </div>
         </div>
       </div>
-       <app-notification :title="getConstructorProduct.title" v-else/>
+       <app-notification :title="`Пицца «${getConstructorProduct.title}» добавлена в корзину`" v-else/>
     </div>
     <div class="wrapper__loader" v-else>
       <app-scale-loader :loader="loader"/>

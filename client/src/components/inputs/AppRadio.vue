@@ -6,7 +6,7 @@
       :name="name"
       :checked="checked"
       :value="value"
-      @input="changeRadio"
+      @input="changeRadio({value: $event.target.value, property: name})"
     >
     <label :for="id" class="radio__name">{{label}}</label>
   </div>
@@ -38,8 +38,8 @@ export default {
     }
   },
   methods:{
-    changeRadio(e){
-      this.$emit('changeRadio', e.target.value)
+    changeRadio({value, property}){
+      this.$emit('changeRadio', value, property)
     }
   }
 }
