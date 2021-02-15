@@ -14,10 +14,21 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    language: ''
+  },
+  getters:{
+    getLanguage: ({language}) => language
   },
   mutations: {
+    SET_LANGUAGE(state,value){
+      state.language = value
+    }
   },
   actions: {
+    changeLanguage({commit}, language){
+      commit('SET_LANGUAGE', language)
+      localStorage.setItem('language', JSON.stringify(language))
+    }
   },
   modules: {
     category,
