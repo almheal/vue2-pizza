@@ -3,12 +3,12 @@
   >
     <div class="container">
       <div class="header__inner">
-        <Logo />
+        <app-logo />
         <div class="nav__wrapper">
-          <Nav :nav="nav" v-if="menu"/>
+          <app-nav :nav="nav" v-if="menu"/>
           <div class="actions__wrapper">
-            <Language />
-            <BurgerMenu @openMenu="openMenuHandler" :active="menu"/>
+            <language />
+            <burger-menu @openMenu="openMenuHandler" :active="menu"/>
           </div>
         </div>
       </div>
@@ -16,15 +16,15 @@
     <div class="clone__header" :class="{fixed: fixed}">
       <div class="container">
         <div class="header__inner">
-          <Logo :activeFixed="fixed"/>
+          <app-logo :activeFixed="fixed"/>
           <ul class="categories__list" v-if="getCategories.length && !menu">
               <li class="categories__item" v-for="(category, index) in getCategories" :key="index">{{category.title}}</li>
           </ul>
           <div class="nav__wrapper">
-            <Nav :nav="nav" v-if="menu" :activeFixed="fixed"/>
+            <app-nav :nav="nav" v-if="menu" :activeFixed="fixed"/>
             <div class="actions__wrapper">
-              <Language :activeFixed="fixed"/>
-              <BurgerMenu @openMenu="openMenuHandler" :active="menu" :activeFixed="fixed"/>
+              <language :activeFixed="fixed"/>
+              <burger-menu @openMenu="openMenuHandler" :active="menu" :activeFixed="fixed"/>
             </div>
           </div>
         </div>
@@ -34,19 +34,19 @@
 </template>
 
 <script>
-import Logo from '@/components/header/Logo'
+import AppLogo from '@/components/header/AppLogo'
 import Language from '@/components/header/Language'
 import BurgerMenu from '@/components/header/BurgerMenu'
-import Nav from '@/components/header/Nav'
+import AppNav from '@/components/header/AppNav'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'TheHeader',
   components:{
-    Logo,
-    Nav,
+    AppLogo,
+    AppNav,
     Language,
-    BurgerMenu
+    BurgerMenu,
   },
   data:()=>({
     menu: false,

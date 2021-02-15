@@ -9,6 +9,7 @@ import ingredientCategory from './modules/ingredientCategory'
 import productConstructor from './modules/constructor'
 import basket from './modules/basket'
 import halves from './modules/halves'
+import user from './modules/user'
 
 Vue.use(Vuex)
 
@@ -40,6 +41,7 @@ export default new Vuex.Store({
     productConstructor,
     basket,
     localStorage,
-    halves
+    halves,
+    user
   }
 })

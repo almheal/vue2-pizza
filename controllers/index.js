@@ -5,5 +5,6 @@ module.exports = {
   tagProduct: require('./tagProduct.controller'),
   feature: require('./feature.controller'),
   ingredientCategory: require('./ingredientCategory.controller'),
-  ingredient: require('./ingredient.controller')
+  ingredient: require('./ingredient.controller'),
+  user: require('./user.controller')
 }
