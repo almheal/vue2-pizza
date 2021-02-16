@@ -10,6 +10,7 @@
 <script>
 import Default from '@/layouts/Default'
 import AppSvgSprites from './components/AppSvgSprites.vue'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'App',
@@ -20,6 +21,17 @@ export default {
   computed:{
     layout(){
       return this.$route.meta.layout
+    }
+  },
+  methods:{
+    ...mapActions({
+      auth: 'user/auth'
+    })
+  },
+  async mounted(){
+    const response = await this.auth()
+    if(response && response.status === 403 && this.$route.path === '/profile'){
+      this.$router.push('/')
     }
   }
 }

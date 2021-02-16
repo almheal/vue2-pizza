@@ -5,12 +5,16 @@
       <div class="header__inner">
         <app-logo />
         <div class="nav__wrapper">
-          <app-nav :nav="nav" v-if="menu"/>
+          <app-nav
+            :nav="nav"
+            v-if="menu"
+          />
           <div class="actions__wrapper">
             <language />
-            <burger-menu @openMenu="openMenuHandler" :active="menu"/>
+            <burger-menu @openMenu="toggleMenuHandler" :active="menu"/>
           </div>
         </div>
+        <div class="access__register" v-if="getUserMessage === 'Регистрация прошла успешно'">{{getUserMessage}}</div>
       </div>
     </div>
     <div class="clone__header" :class="{fixed: fixed}">
@@ -21,12 +25,17 @@
               <li class="categories__item" v-for="(category, index) in getCategories" :key="index">{{category.title}}</li>
           </ul>
           <div class="nav__wrapper">
-            <app-nav :nav="nav" v-if="menu" :activeFixed="fixed"/>
+            <app-nav
+              :nav="nav"
+              v-if="menu"
+              :activeFixed="fixed"
+            />
             <div class="actions__wrapper">
               <language :activeFixed="fixed"/>
-              <burger-menu @openMenu="openMenuHandler" :active="menu" :activeFixed="fixed"/>
+              <burger-menu @openMenu="toggleMenuHandler" :active="menu" :activeFixed="fixed"/>
             </div>
           </div>
+          <div class="access__register" v-if="getUserMessage === 'Регистрация прошла успешно'">{{getUserMessage}}</div>
         </div>
       </div>
     </div>
@@ -56,13 +65,14 @@ export default {
   computed:{
     ...mapGetters({
       getCategories: 'category/getCategories',
+      getUserMessage: 'user/getUserMessage'
     })
   },
   methods:{
     ...mapActions({
       changeLanguage: 'changeLanguage'
     }),
-    openMenuHandler(){
+    toggleMenuHandler(){
       this.menu = !this.menu
     }
   },
@@ -116,6 +126,7 @@ export default {
 }
 
 .header__inner{
+  position: relative;
   display: flex;
   height: 100%;
   justify-content: space-between;
@@ -163,5 +174,24 @@ export default {
 .actions__wrapper{
   display: flex;
   align-items: center;
+}
+
+.access__register{
+  position: absolute;
+  text-align: center;
+  line-height: 1.3;
+  color: #009471;
+  background-color: #e1faf4;
+  width: 300px;
+  background-color: #fff;
+  position: absolute;
+  right: 0;
+  z-index: 700;
+  top: 100%;
+  padding: 30px 25px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 18px;
+  box-shadow: 0 2px 12px 0 rgba(41, 44, 51, 0.2);
 }
 </style>

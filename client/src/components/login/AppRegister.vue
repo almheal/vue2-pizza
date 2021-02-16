@@ -7,18 +7,11 @@
     @clickOnText="toLogin"
     @clickFormButton="toPassword"
   >
-    <div class="form-group">
-      <label class="input__name">Имя *</label>
-      <input type="text" class="input" v-model="getRegisterUser.name">
+    <div class="form-group" v-for="(input, index) in inputs" :key="index">
+      <label class="input__name">{{input.label}}</label>
+      <input type="text" class="input" v-model="getRegisterUser[input.property]">
     </div>
-    <div class="form-group">
-      <label class="input__name">Номер телефона *</label>
-      <input type="number" class="input" v-model="getRegisterUser.number">
-    </div>
-    <div class="form-group">
-      <label class="input__name">Email *</label>
-      <input type="text" class="input" v-model="getRegisterUser.email">
-    </div>
+    <div class="notification" v-if="getUserMessage">{{getUserMessage}}</div>
   </app-form>
 </template>
 
@@ -34,11 +27,26 @@ export default {
   },
   data: () => ({
     text: 'Отмена',
-    button: 'Продолжить'
+    button: 'Продолжить',
+    inputs: [
+      {
+        label: 'Имя *',
+        property: 'name'
+      },
+      {
+        label: 'Номер телефона *',
+        property: 'number'
+      },
+      {
+        label: 'Email *',
+        property: 'email'
+      },
+    ]
   }),
   computed:{
     ...mapGetters({
-      getRegisterUser: 'user/getRegisterUser'
+      getRegisterUser: 'user/getRegisterUser',
+      getUserMessage: 'user/getUserMessage'
     }),
     getValidInputs(){
       const validationProperties = ['name','number','email']
@@ -49,6 +57,7 @@ export default {
   methods:{
     ...mapActions({
       fetchExistingUser: 'user/fetchExistingUser',
+      changeMessage: 'user/changeMessage'
     }),
     toLogin(){
       this.$emit('toLogin')
@@ -58,10 +67,12 @@ export default {
     },
     async toPassword(){
       if(!this.getValidInputs) return
-      const res = await this.fetchExistingUser(this.getRegisterUser)
-      if(res.status === 200){
+      const response = await this.fetchExistingUser(this.getRegisterUser)
+      if(response && response.status === 200){
         this.$emit('toPassword')
+        this.changeMessage('')
       }
+
     }
   },
   validations:{
@@ -73,3 +84,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.notification{
+  font-size: 12px;
+  line-height: 1.3;
+  margin-bottom: 15px;
+}
+</style>

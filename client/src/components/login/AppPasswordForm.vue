@@ -9,13 +9,13 @@
   >
     <div class="form-group">
       <label class="input__name">Пароль</label>
-      <input type="text" class="input" v-model="getRegisterUser.password">
+      <input type="password" class="input" v-model="getRegisterUser.password">
     </div>
     <div class="form-group">
       <label class="input__name">Повторите пароль</label>
-      <input type="text" class="input" v-model="getRegisterUser.repeatPassword">
+      <input type="password" class="input" v-model="getRegisterUser.repeatPassword">
     </div>
-    <div class="error" v-if="error">{{error}}</div>
+    <div class="notification" v-if="getUserMessage">{{getUserMessage}}</div>
   </app-form>
 </template>
 
@@ -36,7 +36,8 @@ export default {
   }),
   computed:{
     ...mapGetters({
-      getRegisterUser: 'user/getRegisterUser'
+      getRegisterUser: 'user/getRegisterUser',
+      getUserMessage: 'user/getUserMessage'
     }),
     getValidInputs(){
       const validationProperties = ['password','repeatPassword']
@@ -46,7 +47,7 @@ export default {
   },
   methods:{
     ...mapActions({
-      register: 'user/register'
+      register: 'user/register',
     }),
     toRegisterForm(){
       this.$emit('toRegisterForm')
@@ -56,11 +57,9 @@ export default {
     },
     async registerHandler(){
       if(!this.getValidInputs) return
-      if(this.getRegisterUser.password !== this.getRegisterUser.repeatPassword){
-        this.error = 'Пароли не совпадают'
-        return
-      }
-      await this.register(this.getRegisterUser)
+      const response = await this.register(this.getRegisterUser)
+      if(response.status === 400) return
+      this.closeModal()
     }
   },
   validations:{
@@ -73,8 +72,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.error{
+.notification{
   font-size: 12px;
-  color: red;
+  line-height: 1.3;
+  margin-bottom: 15px;
 }
 </style>

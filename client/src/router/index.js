@@ -27,6 +27,12 @@ const routes = [
     name: 'Order',
     meta: {layout: 'default'},
     component: () => import('../views/Order')
+  },
+  {
+    path: '/profile',
+    name: 'Profile',
+    meta: {layout: 'default', auth: true},
+    component: () => import ('../views/Profile')
   }
 ]
 

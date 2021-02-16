@@ -48,16 +48,41 @@ module.exports = {
 
       const user = await User.findOne({number})
       if(!user){
-        return res.status(400).json({message: 'Пользователь не найден'})
+        return res.status(400).json({message: 'Не корректные данные'})
       }
 
       const somePasswords = await bcrypt.compare(password, user.password)
       if(!somePasswords){
-        return res.status(400).json({message: 'Не корретные данные'})
+        return res.status(400).json({message: 'Не корректные данные'})
       }
 
       const token = await jwt.sign({id: user._id}, config.get('secretToken'), {expiresIn: '24h'})
-      return res.status(200).json({token, name: user.name, email: user.email})
+      const {name, email, gender, dateOfBirth, img} = user
+      return res.status(200).json({token, name, email, number: user.number, gender, dateOfBirth, img, password: ''})
+    } catch (e) {
+      console.log(e)
+    }
+  },
+  async auth({id},res){
+    try {
+      const user = await User.findById(id)
+      if(!user){
+        return res.status(400).json({message: 'Пользователь не найден'})
+      }
+
+      const {name, email, number, gender, dateOfBirth, img} = user
+
+      res.status(200).json({name, email, number, gender, dateOfBirth, img, password: ''})
+      return res.status(200).json()
+    } catch (e) {
+      console.log(e)
+    }
+  },
+  async update({id, body}, res){
+    try {
+      const user = await User.findByIdAndUpdate(id, body, {new: true})
+      const {name, email, number, gender, dateOfBirth, img} = user
+      res.status(200).json({name,email,number,gender,dateOfBirth, img, password: ''})
     } catch (e) {
       console.log(e)
     }
