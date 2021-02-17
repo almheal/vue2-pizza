@@ -1,7 +1,7 @@
 <template>
   <div class="product__size">
     <div class="size__item"
-      :class="{active: kind.size === activeKind.size}"
+      :class="{active: kind.size === activeProduct.kind.size}"
       v-for="(kind, index) in kinds" :key="index"
       @click="changeKind(kind)"
     >
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'ProductKind',
   props:{
@@ -18,13 +19,17 @@ export default {
       type: Array,
       default: () => []
     },
-    activeKind:{
+    activeProduct:{
       type: Object,
       default: () => {}
     }
   },
   methods:{
-    changeKind(kind){
+    ...mapActions({
+      changeKindProduct: 'product/changeKindProduct'
+    }),
+    async changeKind(kind){
+      await this.changeKindProduct({product: this.activeProduct, kind})
       this.$emit('changeKind', kind)
     }
   }

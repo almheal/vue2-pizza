@@ -31,14 +31,12 @@
         <product-variety
           v-if="activeProduct.variety"
           :variety="product.variety"
-          :activeVariety="activeProduct.variety"
-          @changeVariety="changeVarietyHandler"
+          :activeProduct="activeProduct"
         />
         <product-kind
           v-if="activeProduct.kind"
           :kinds="activeProduct.variety.kind"
-          :activeKind="activeProduct.kind"
-          @changeKind="changeKindHandler"
+          :activeProduct="activeProduct"
         />
       <div class="product__actions">
         <app-button :name="btnName" @buttonOnClick="addProductHandler"/>
@@ -123,16 +121,8 @@ export default {
       searchProductTags: 'productTag/searchProductTags',
       searchProductFeatures: 'feature/searchProductFeatures',
       startingActiveProduct: 'product/startingActiveProduct',
-      changeVarietyProduct: 'product/changeVarietyProduct',
-      changeKindProduct: 'product/changeKindProduct',
       addInBasket: 'basket/addInBasket'
     }),
-    changeVarietyHandler(variety){
-      this.changeVarietyProduct({product: this.activeProduct, variety})
-    },
-    changeKindHandler(kind){
-      this.changeKindProduct({product: this.activeProduct, kind})
-    },
     toggleIngredients(){
       this.poppup = !this.poppup
     },

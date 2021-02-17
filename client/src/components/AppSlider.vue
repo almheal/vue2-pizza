@@ -5,9 +5,9 @@
         <use xlink:href="#arrow-left"></use>
       </svg>
     </button>
-    <VueSlickCarousel class="slider" v-bind="settings" ref="carousel">
+    <VueSlickCarousel class="slider" v-bind="settings" ref="carousel" lazyLoad="true">
       <div class="carousel__item" v-for="(slide,index) in slides" :key="index">
-        <img class="slide__img" :src="require(`../assets/img/intro/${slide}`)" alt="slide">
+        <img class="slide__img" :src="require(`../assets/img/intro/${slide}`)" alt="slide"/>
       </div>
     </VueSlickCarousel>
     <button class="carousel__btn next" @click="nextSlide">
@@ -26,7 +26,7 @@ import 'vue-slick-carousel/dist/vue-slick-carousel-theme.css'
 export default {
   name: 'AppSlider',
   components:{
-    VueSlickCarousel
+    VueSlickCarousel,
   },
   props:{
     slides:{
@@ -42,7 +42,7 @@ export default {
       "focusOnSelect": true,
       "infinite": true,
       "slidesToShow": 1,
-      "speed": 500
+      "speed": 500,
     }
   }),
   methods:{
@@ -71,6 +71,7 @@ export default {
   height: 410px;
   width: 100%;
   padding: 0 15px;
+  background-color: #fff;
   border-radius: 8px;
   &::before{
     content: '';
