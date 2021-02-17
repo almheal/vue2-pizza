@@ -1,8 +1,8 @@
 <template>
   <div class="product__variety">
     <div class="variety__item"
-      :class="{active: variety.title === activeVariety.title}"
       v-for="(variety,index) in variety" :key="index"
+      :class="{active: variety.title === activeProduct.variety.title}"
       @click="changeVariety(variety)"
     >
       {{variety.title}}
@@ -11,6 +11,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 
 export default {
   name: 'ProductVariety',
@@ -19,16 +20,20 @@ export default {
       type: Array,
       default: () => []
     },
-    activeVariety:{
+    activeProduct:{
       type: Object,
       default: () => {}
     }
   },
   methods:{
-    changeVariety(variety){
+    ...mapActions({
+      changeVarietyProduct: 'product/changeVarietyProduct',
+    }),
+    async changeVariety(variety){
+      await this.changeVarietyProduct({product: this.activeProduct, variety})
       this.$emit('changeVariety', variety)
     }
-  }
+  },
 }
 </script>
 

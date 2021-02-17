@@ -176,6 +176,9 @@ export default {
     this.fetchFeatures()
     this.fetchAllIngredientCategories()
     this.disableIngredients(pizza)
+  },
+  beforeDestroy(){
+    this.resetFilterHandler()
   }
 }
 </script>

@@ -2,175 +2,112 @@
   <div class="sidebar">
     <div class="sidebar__body">
       <div class="user__avatar">
-        <img class="user__img" src="../../assets/avatar.svg" alt="avatar">
+        <img class="user__img" v-if="user.img" :src="user.img" alt="avatar">
+        <img class="user__img" v-else src="../../assets/avatar.svg" alt="avatar">
+        <div class="wrapper__camera">
+          <img class="camera__img" src="../../assets/camera.svg" alt="load photo">
+        </div>
+        <input class="file__load" type="file" @change="loadUserImage"/>
+        <btn-cross class="button__cross" @btnOnClick="removeUserImage"/>
       </div>
       <template v-for="(item, index) in infoList">
-        <div class="user__info"
-          :class="{
-            edit: item.toggle,
-            'info__name': item.property === 'name'
-          }"
+        <profile-item
+          v-if="user"
           :key="index"
-        >
-          <div class="info__title" v-if="item.label">{{item.label}}</div>
-          <div class="info__content"
-            v-if="!item.toggle"
-          >
-            <div class="info__value" v-if="item.property === 'number'">{{getMaskNumber}}</div>
-            <div class="info__value"
-              v-if="item.property !== 'number'"
-            >{{user[item.property]}}</div>
-            <div class="wrapper__icon"
-              v-if="item.property !== 'dateOfBirth' || user[item.property]"
-              @click="changeEdit(item.property)"
-            >
-              <svg class="edit__icon">
-                <use xlink:href="#pen"></use>
-              </svg>
-            </div>
-          </div>
-          <div class="form-group"
-            v-if="item.toggle &&
-            item.property !== 'dateOfBirth'"
-          >
-            <input
-              class="input"
-              v-model="user[item.property]"
-              type="text"
-              @change="updateUser()"
-            >
-          </div>
-          <template
-            v-if="!user[item.property] &&
-            item.property === 'dateOfBirth' ||
-            item.toggle && user[item.property] && item.property === 'dateOfBirth'">
-            <date-picker
-              :value="item[item.property]"
-              valueType="DD MM YYYYг"
-              placeholder="Указать дату рождения"
-              @change="selectDateOfBirth"
-              @close="closeDatePicker(item)"
-              @clear="closeDatePicker(item)"
-            />
-          </template>
-          <div class="background" v-if="item.toggle" @click="changeEdit(item.property)"></div>
-          <div class="danger-message" v-if="item.invalid">{{item.invalid}}</div>
-        </div>
+          :profileInfo="item"
+          :user="user"
+          @updateUser="updateUserHandler"
+        />
       </template>
     </div>
   </div>
 </template>
 
 <script>
-import DatePicker from 'vue2-datepicker'
-import 'vue2-datepicker/index.css';
 import { mapActions } from 'vuex';
 import {minLength, required, maxLength, email} from 'vuelidate/lib/validators'
+import ProfileItem from '@/components/profile/ProfileItem'
+import BtnCross from '@/components/buttons/BtnCross'
 
 export default {
   name: 'ProfileSidebar',
   components:{
-    DatePicker
+    ProfileItem,
+    BtnCross
   },
   props:{
     user:{
       type: Object,
-      required: true
+      default: () => {}
     }
   },
   data: () => ({
+    userImage: '',
     infoList: [
       {
         property: 'name',
-        toggle: false,
         invalid: ''
       },
       {
         label: 'Мой номер',
         property: 'number',
-        toggle: false,
         invalid: ''
       },
       {
         label: 'E-mail',
         property: 'email',
-        toggle: false,
         invalid: ''
       },
       {
         label: 'Пол',
         property: 'gender',
-        toggle: false,
       },
       {
         label: 'Дата рождения',
         property: 'dateOfBirth',
-        toggle: false
       },
     ]
   }),
-  computed:{
-    getMaskNumber(){
-      const maskNumber = this.user.number.split('')
-      maskNumber.splice(1,0,' ')
-      maskNumber.splice(5,0,' ')
-      maskNumber.splice(9,0,'-')
-      maskNumber.splice(12,0,'-')
-      return maskNumber.join('')
-    },
-  },
   methods:{
     ...mapActions({
       fetchUpdateUser: 'user/fetchUpdateUser'
     }),
-    changeEdit(property){
-      this.infoList.forEach(item => {
-        if(item.property === property){
-          item.toggle = !item.toggle
-        }
-      })
-      this.background = !this.background
-    },
-    async updateUser(){
+    async updateUserHandler({value, item}){
+      this.user[item.property] = value
+
       if(this.$v.$invalid){
         this.$v.$touch()
-        this.setInvalidMessages()
+        item.invalid = 'Не корректные данные'
         return
       }
+
       this.infoList.forEach(item => item.invalid = '')
       await this.fetchUpdateUser(this.user)
     },
-    closeDatePicker(item){
-      item.toggle = false
-    },
-    changeFormatDate(date){
-      const monthArr = ['Января', 'Февраля', 'Марта', 'Апреля', 'Мая', 'Июня', 'Июля', 'Августа', 'Сентября', 'Октября', 'Ноября', 'Декабря']
-      const format = date.split(' ').reduce((acc, item, index) =>{
-        if(index === 1){
-          const month = item[0] == 0 ? item[1] - 1 : item - 1
-          acc.push(monthArr[month])
-          return acc
+    loadUserImage(e){
+      if(!e.target.files.length) return
+
+      const files = Array.from(e.target.files)
+
+      files.forEach(file => {
+        if(!file.type.match('image')){
+          return
         }
-        acc.push(item)
-        return acc
-      },[])
-      return format.join(' ')
+        const reader = new FileReader()
+
+        reader.onload = ev => {
+          this.user.img = ev.target.result
+          this.fetchUpdateUser(this.user)
+        }
+
+        reader.readAsDataURL(file)
+      })
     },
-    async selectDateOfBirth(date){
-      this.user.dateOfBirth = this.changeFormatDate(date)
-      this.updateUser()
-    },
-    setInvalidMessages(){
-      const properties = ['name', 'number', 'email', 'password']
-      const invalidProperties = properties.filter(item => this.$v.user[item].$invalid)
-      if(invalidProperties.length){
-        invalidProperties.forEach(name =>{
-          for(let i = 0; i < this.infoList.length; i++){
-            if(this.infoList[i].property === name){
-              this.infoList[i].invalid = 'Не корректное значение'
-            }
-          }
-        })
+    removeUserImage(){
+      const isConfirm = confirm('Вы действительно хотите удалить?')
+      if(isConfirm){
+        this.user.img = ''
+        this.fetchUpdateUser(this.user)
       }
     }
   },
@@ -206,6 +143,7 @@ export default {
   width: 135px;
   height: 135px;
   border-radius: 50%;
+  cursor: pointer;
   &::before{
     content: '';
     position: absolute;
@@ -218,86 +156,60 @@ export default {
     background-repeat: no-repeat;
     background-position: center;
   }
+  &:hover .wrapper__camera,
+  &:hover .button__cross{
+    opacity: 1;
+    transition: .3s;
+  }
 }
 
 .user__img{
   position: relative;
-  width: 131px;
-  height: 131px;
+  width: 130px;
+  height: 130px;
   z-index: 2;
   border-radius: 50%;
 }
 
-.user__info{
-  margin-bottom: 30px;
-  &.edit{
-    position: relative;
-    z-index: 160;
-  }
-  &.info__name .info__content{
-    font-family: 'Gotham';
-    font-weight: 700;
-    font-size: 18px;
-    justify-content: center;
-  }
-  &:last-child{
-    margin-bottom: 0;
-  }
-}
-
-.info__title{
-  font-size: 12px;
-  color: #a69895;
-  margin-bottom: 16px;
-}
-
-.info__content{
+.wrapper__camera{
+  position: absolute;
   display: flex;
-  font-family: 'Roboto';
-  font-weight: 500;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  font-size: 16px;
-}
-
-.wrapper__icon{
-  cursor: pointer;
-  &:hover .edit__icon{
-    fill: #009471;
-    transition: .3s;
-  }
-}
-
-.edit__icon{
-  width: 24px;
-  height: 24px;
-  padding: 3px;
-  fill: #ededed;
-  margin-left: 5px;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background-color: rgba(112,84,79,.5);
+  z-index: 50;
+  opacity: 0;
   transition: .3s;
 }
 
-.background{
-  position: fixed;
+.camera__img{
+  width: 25px;
+  height: 25px;
+}
+
+.file__load{
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: absolute;
   left: 0;
   top: 0;
+  z-index: 50;
+  cursor: pointer;
+  opacity: 0;
+}
+
+.button__cross{
+  position: absolute;
   right: 0;
-  bottom: 0;
-  z-index: -1;
-  background-color: rgba(0,0,0,0);
-}
-
-.info__button{
-  color: #009471;
-  transition: .3s;
-  &:hover{
-    color: #006d54;
-    transition: .3s;
-  }
-}
-
-.danger-message{
-  color: #c21313;
-  margin-top: 5px;
+  top: 0;
+  z-index: 100;
+  opacity: 0;
 }
 </style>

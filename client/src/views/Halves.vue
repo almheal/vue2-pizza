@@ -44,14 +44,12 @@
                 <product-variety
                   v-if="activeProduct.variety"
                   :variety="getHalvesProduct.variety"
-                  :activeVariety="activeProduct.variety"
-                  @changeVariety="changeVarietyHandler"
+                  :activeProduct="activeProduct"
                 />
                 <product-kind
                   v-if="activeProduct.variety"
                   :kinds="activeProduct.variety.kind"
-                  :activeKind="activeProduct.kind"
-                  @changeKind="changeKindHandler"
+                  :activeProduct="activeProduct"
                 />
                 <div class="product__actions">
                   <app-button :name="btnName" @buttonOnClick="addProduct"/>
@@ -166,12 +164,6 @@ export default {
     selectRightProduct(product){
       this.setRightProduct(product)
     },
-    changeVarietyHandler(variety){
-      this.changeVarietyProduct({product: this.activeProduct, variety})
-    },
-    changeKindHandler(kind){
-      this.changeKindProduct({product: this.activeProduct, kind})
-    }
   },
   async mounted(){
     this.loader = true
