@@ -14,12 +14,35 @@
           </div>
           <div class="profile__section">
             <div class="section__header">
+              <h5 class="section__title">История заказов</h5>
+              <h6 class="section__text">Редактировать заказ можно в корзине</h6>
+            </div>
+            <div class="section__body">
+              <div class="empty__history">
+                История пуста
+              </div>
+            </div>
+          </div>
+          <div class="profile__section">
+            <div class="section__header">
               <h5 class="section__title">Адреса доставки</h5>
             </div>
             <div class="section__body">
               <div class="address__item">
                 <div class="plus__icon"></div>
                 <div class="address__item-title">Добавить адрес</div>
+              </div>
+            </div>
+          </div>
+          <div class="profile__section">
+            <div class="section__header">
+              <h5 class="section__title">Карты и оплата</h5>
+              <h6 class="section__subtitle">Оплата подтверждается SMS-кодом</h6>
+            </div>
+            <div class="section__body">
+              <div class="payment__add">
+                <div class="plus__icon"></div>
+                <div class="payment__name">Добавить карту</div>
               </div>
             </div>
           </div>
@@ -92,7 +115,8 @@ export default {
   font-size: 18px;
 }
 
-.section__subtitle{
+.section__text{
+  font-size: 12px;
   color: #bfb7b6;
 }
 
@@ -143,5 +167,38 @@ export default {
   &::after{
     transform: translate(-50%,-50%) rotate(-90deg);
   }
+}
+
+.empty__history{
+  font-family: 'Gotham';
+  font-weight: 600;
+  font-size: 16px;
+  text-align: center;
+}
+
+.payment__add{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 17px 8px 15px;
+  background-color: #f5f5f5;
+  border-radius: 3px;
+  width: 118px;
+  font-size: 12px;
+  transition: .3s;
+  cursor: pointer;
+  &:hover{
+    background-color: #e1faf4;
+    transition: .3s;
+  }
+  &:hover .plus__icon{
+    background-color: #009471;
+    transition: .3s;
+  }
+}
+
+.payment__name{
+  margin-top: 7px;
 }
 </style>
