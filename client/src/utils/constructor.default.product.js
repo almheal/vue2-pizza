@@ -20,7 +20,7 @@ export const defaultProduct = {
         size: 40,
         price: 749
       }
-    ]
+    ]//** */
   },
   {
     title: 'Тонкое',
