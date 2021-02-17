@@ -5,11 +5,14 @@
         <use xlink:href="#arrow-left"></use>
       </svg>
     </button>
-    <VueSlickCarousel class="slider" v-bind="settings" ref="carousel" lazyLoad="true">
+    <vue-slick-carousel class="slider" v-bind="settings" ref="carousel" lazyLoad="true">
       <div class="carousel__item" v-for="(slide,index) in slides" :key="index">
-        <img class="slide__img" :src="require(`../assets/img/intro/${slide}`)" alt="slide"/>
+        <picture>
+          <source :srcset="require(`../assets/img/intro/${slide}.webp`)" type="image/webp"/>
+          <img class="slide__img" :src="require(`../assets/img/intro/${slide}.jpg`)" alt="slide"/>
+        </picture>
       </div>
-    </VueSlickCarousel>
+    </vue-slick-carousel>
     <button class="carousel__btn next" @click="nextSlide">
       <svg class="arrow-icon">
         <use xlink:href="#arrow-right"></use>
