@@ -18,10 +18,12 @@
           >
             <div class="info__value" v-if="item.property === 'number'">{{getMaskNumber}}</div>
             <div class="info__value"
-              v-if="item.property !== 'number' &&
-              item.property !== 'password'"
+              v-if="item.property !== 'number'"
             >{{user[item.property]}}</div>
-            <div class="wrapper__icon" @click="changeEdit(item.property)">
+            <div class="wrapper__icon"
+              v-if="item.property !== 'dateOfBirth' || user[item.property]"
+              @click="changeEdit(item.property)"
+            >
               <svg class="edit__icon">
                 <use xlink:href="#pen"></use>
               </svg>
@@ -34,7 +36,7 @@
             <input
               class="input"
               v-model="user[item.property]"
-              :type="item.property === 'password' ? 'password' : 'text'"
+              type="text"
               @change="updateUser()"
             >
           </div>
@@ -109,15 +111,11 @@ export default {
   }),
   computed:{
     getMaskNumber(){
-      const maskNumber = this.user.number.split('').reduce((acc, item, index) =>{
-        if(index === 1 || index === 4){
-          acc.push(' ')
-        }else if(index === 7 || index === 9){
-          acc.push('-')
-        }
-        acc.push(item)
-        return acc
-      },[])
+      const maskNumber = this.user.number.split('')
+      maskNumber.splice(1,0,' ')
+      maskNumber.splice(5,0,' ')
+      maskNumber.splice(9,0,'-')
+      maskNumber.splice(12,0,'-')
       return maskNumber.join('')
     },
   },
@@ -139,6 +137,7 @@ export default {
         this.setInvalidMessages()
         return
       }
+      this.infoList.forEach(item => item.invalid = '')
       await this.fetchUpdateUser(this.user)
     },
     closeDatePicker(item){
