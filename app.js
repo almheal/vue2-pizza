@@ -16,7 +16,8 @@ app.use(cors({
 
 
 
-app.use(express.json({ extended: true }))
+app.use(express.json({ extended: true, limit: '1mb' }))
+
 
 routes.forEach(route =>{
   app.use('/api', require(`./routes/${route}`))

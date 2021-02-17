@@ -32,12 +32,12 @@
             <img class="edit-icon" src="../assets/pen.svg" alt="edit">
             <product-variety
               :variety="defaultProduct.variety"
-              :activeVariety="getConstructorProduct.variety ? getConstructorProduct.variety : {}"
+              :activeProduct="getConstructorProduct ? getConstructorProduct : {}"
               @changeVariety="changeVarietyHandler"
             />
             <product-kind
               :kinds="getConstructorProduct.variety ? getConstructorProduct.variety.kind : []"
-              :activeKind="getConstructorProduct.kind"
+              :activeProduct="getConstructorProduct"
               @changeKind="changeKindHandler"
             />
           </div>
@@ -144,15 +144,10 @@ export default {
       await this.getProductsFromLocal()
       this.addInBasket(this.getConstructorProduct)
     },
-    async changeVarietyHandler(variety){
-      await this.changeVarietyProduct({
-        product: this.getConstructorProduct,
-        variety
-      })
+    async changeVarietyHandler(){
       this.calculateTotal(this.getConstructorProduct)
     },
-    async changeKindHandler(kind){
-      await this.changeKindProduct({product: this.getConstructorProduct, kind})
+    async changeKindHandler(){
       this.calculateTotal(this.getConstructorProduct)
     },
     markedIngredientsOwner(ingredients){

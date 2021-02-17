@@ -58,7 +58,7 @@ module.exports = {
 
       const token = await jwt.sign({id: user._id}, config.get('secretToken'), {expiresIn: '24h'})
       const {name, email, gender, dateOfBirth, img} = user
-      return res.status(200).json({token, name, email, number: user.number, gender, dateOfBirth, img, password: ''})
+      return res.status(200).json({token, name, email, number: user.number, gender, dateOfBirth, img})
     } catch (e) {
       console.log(e)
     }
@@ -72,7 +72,7 @@ module.exports = {
 
       const {name, email, number, gender, dateOfBirth, img} = user
 
-      res.status(200).json({name, email, number, gender, dateOfBirth, img, password: ''})
+      res.status(200).json({name, email, number, gender, dateOfBirth, img})
       return res.status(200).json()
     } catch (e) {
       console.log(e)
@@ -82,7 +82,7 @@ module.exports = {
     try {
       const user = await User.findByIdAndUpdate(id, body, {new: true})
       const {name, email, number, gender, dateOfBirth, img} = user
-      res.status(200).json({name,email,number,gender,dateOfBirth, img, password: ''})
+      res.status(200).json({name,email,number,gender,dateOfBirth, img})
     } catch (e) {
       console.log(e)
     }
